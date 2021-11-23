@@ -2,6 +2,7 @@
 elasticsearch:
   hosts:
     ubuntu:
+    # Подключение к локальной ВМ по ssh
       ansible_host: 127.0.0.1
       ansible_port: 2222
       ansible_connection: ssh
