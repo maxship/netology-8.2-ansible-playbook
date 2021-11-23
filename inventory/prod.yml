@@ -6,3 +6,4 @@ elasticsearch:
       ansible_port: 2222
       ansible_connection: ssh
       ansible_user: vagrant
+      ansible_password: vagrant_password
