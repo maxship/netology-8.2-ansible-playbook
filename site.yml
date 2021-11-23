@@ -2,7 +2,7 @@
 - name: Install Java
   hosts: all
   tasks:
-    - name: Set facts for Java 11 vars
+    - name: Set home dir for Java 11
       set_fact:
         java_home: "/opt/jdk/{{ java_jdk_version }}"
       tags: java
@@ -50,7 +50,8 @@
       register: get_elastic
       until: get_elastic is succeeded
       tags: elastic
-    - name: Create directrory for Elasticsearch
+    - name: Create directrory for Elasticsearc
+      become: true
       file:
         state: directory
         path: "{{ elastic_home }}"
@@ -87,6 +88,7 @@
       until: get_kibana is succeeded
       tags: kibana
     - name: Create directrory for Kibana
+      become: true
       file:
         state: directory
         path: "{{ kibana_home }}"
