@@ -1,15 +1,16 @@
 ---
-- name: Install Java
-  hosts: all
+- name: Install Java # play для установки JDK
+  hosts: all # будет выполняться для всех хостов
   tasks:
-    - name: Set home dir for Java 11
+    - name: Set home dir for Java 11 
       set_fact:
-        java_home: "/opt/jdk/{{ java_jdk_version }}"
-      tags: java
+        java_home: "/opt/jdk/{{ java_jdk_version }}" # таск для задания пути к установочной директории java
+      tags: java # все таски из этого плея помечены тегом "java"
     - name: Upload .tar.gz file containing binaries from local storage
       copy:
         src: "{{ java_oracle_jdk_package }}"
         dest: "/tmp/jdk-{{ java_jdk_version }}.tar.gz"
+        mode: 0644
       register: download_java_binaries
       until: download_java_binaries is succeeded
       tags: java
@@ -18,6 +19,7 @@
       file:
         state: directory
         path: "{{ java_home }}"
+        mode: 0644
       tags: java
     - name: Extract java in the installation directory
       become: true
@@ -27,6 +29,7 @@
         dest: "{{ java_home }}"
         extra_opts: [--strip-components=1]
         creates: "{{ java_home }}/bin/java"
+        mode: 0644
       tags:
         - java
     - name: Export environment variables
@@ -34,6 +37,7 @@
       template:
         src: jdk.sh.j2
         dest: /etc/profile.d/jdk.sh
+        mode: 0644
       tags: java
 
 - name: Install Elasticsearch
@@ -55,6 +59,7 @@
       file:
         state: directory
         path: "{{ elastic_home }}"
+        mode: 0644
       tags: elastic
     - name: Extract Elasticsearch in the installation directory
       become: true
@@ -64,6 +69,7 @@
         dest: "{{ elastic_home }}"
         extra_opts: [--strip-components=1]
         creates: "{{ elastic_home }}/bin/elasticsearch"
+        mode: 0644
       tags:
         - elastic
     - name: Set environment Elastic
@@ -71,10 +77,11 @@
       template:
         src: templates/elk.sh.j2
         dest: /etc/profile.d/elk.sh
+        mode: 0644
       tags: elastic
 
 - name: Install Kibana
-  hosts: elasticsearch
+  hosts: kibana
   tasks:
     - name: Upload tar.gz Kibana from remote URL
       get_url:
@@ -92,6 +99,7 @@
       file:
         state: directory
         path: "{{ kibana_home }}"
+        mode: 0644
       tags: kibana
     - name: Extract Kibana in the installation directory
       become: true
@@ -101,6 +109,7 @@
         dest: "{{ kibana_home }}"
         extra_opts: [--strip-components=1]
         creates: "{{ kibana_home }}/bin/kibana"
+        mode: 0644
       tags:
         - kibana
     - name: Set environment kibana
@@ -108,4 +117,5 @@
       template:
         src: templates/kibana.sh.j2
         dest: /etc/profile.d/kibana.sh
+        mode: 0644
       tags: kibana

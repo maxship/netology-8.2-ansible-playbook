@@ -1,10 +1,25 @@
 ---
 elasticsearch:
   hosts:
-    ubuntu:
-    # Подключение к локальной ВМ по ssh
+    ubuntu-1:
+    # Подключение к локальной ВМ 1 по ssh
       ansible_host: 127.0.0.1
       ansible_port: 2222
+      ansible_connection: ssh
+      ansible_user: vagrant
+      ansible_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          36313330623266383839376530386661633930613364633238656531303832373338353536643834
+          3263306633646264353033636134666433393833623133630a353935646161386637623930313038
+          66616431333031653931356438613933356662633533646135346561346430373235306135313464
+          3134633131363739360a646538393237393863323238353464326337303633393839333662376130
+          3732
+kibana:
+  hosts:
+    ubuntu-2:
+    # Подключение к локальной ВМ 2 по ssh
+      ansible_host: 127.0.0.1
+      ansible_port: 2200
       ansible_connection: ssh
       ansible_user: vagrant
       ansible_password: !vault |
